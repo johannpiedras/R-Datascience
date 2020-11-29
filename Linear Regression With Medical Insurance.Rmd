@@ -1,0 +1,32 @@
+---
+title: "Linear Regression with Medical Insurance"
+author: "Johann Piedras"
+date: "11/28/2020"
+output:  
+  pdf_document:
+    #toc: yes
+    toc_depth: 4
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '4'
+---
+\newpage
+\tableofcontents
+\pagebreak[4]
+
+# Which Factors Influce the Price Of Health Insurance? 
+First and foremost, this RMD file is inspired and founded thanks to a Python Notebook by mariapushkareva on Kaggle. The purpose here is to showcase an example of linear regression with medical data, but also to parallel data analysis from Python using R. \
+
+With that out of the way lets, look at the insurance.csv file sourced from Kaggle. Although I don't know exactly where Kaggle got the csv from, the purpose derived from the data is is to attempt to understand what factors contribute to the cost of health insurance. 
+
+## EDA
+
+```{r}
+# importing the data
+df <- read.csv('insurance.csv', header = TRUE)
+head(df)
+```
+
+
+
