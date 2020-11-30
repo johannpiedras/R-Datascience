@@ -20,6 +20,16 @@ First and foremost, this RMD file is inspired and founded thanks to a Python Not
 
 With that out of the way lets, look at the insurance.csv file sourced from Kaggle. Although I don't know exactly where Kaggle got the csv from, the purpose derived from the data is is to attempt to understand what factors contribute to the cost of health insurance. 
 
+### Factors In Health Insurance Cost
+**Age** : The age of a beneficiary of health insurance. \
+**Sex** : Insurance companies use the binary of female/male \
+**BMI** : Short for Body Mass Index. $BMI = \frac{m}{h^2}$ where m is mass in kilograms, and h is height in meters. \
+**Children** : Number of dependents for the beneficiaries insurance plan. \
+**Smoker** : Whether the beneficiary smokes or not. \
+**Region** : The beneficiaries area within the US. \
+**Charges** : Amount they've been charged. \
+
+
 ## EDA
 
 ```{r}
@@ -27,6 +37,66 @@ With that out of the way lets, look at the insurance.csv file sourced from Kaggl
 df <- read.csv('insurance.csv', header = TRUE)
 head(df)
 ```
+### Dimension: dim() <-- shape()
+```{r}
+dim(df)
+```
+### Summary Statistics: summary() <-- describe()
+```{r}
+summary(df)
+```
+### Data Types: str() <-- .types()
+```{r}
+str(df)
+```
+Alternatively you can use the sapply function to find the datatypes of each column. 
+```{r}
+sapply(df,class)
+```
+#### Apply() family tangent 
+**apply()**: apply(Array, margin =(1 or 2), function...) -> For arrays. 1 is rows. 2 is columns. c(1,2) is columns and rows.  \
+**lapply()**: lapply(Dataframe/List/Vectors, function...) -> Returns a list of the same size of the object inputted/ \
+**sapply()**: sapply(Dataframe/List/Vectors, function...) -> Returns a vector, or a simplified version of the object class. \ 
+
+### Nulls in each column 
+```{r}
+# Python would use... df.isnull().sum()
+colSums(is.na(df))
+```
+
+### Basic EDA report
+So after some basic review the first things that come to mind are:
+- No Null. \
+- Sex, Smoker, and Region are factors. We could potentially make dummies from these. \
+- There's a significant amount of non smokers compared to smokers. \
+- Each region has about 320 people. \
+- Charges range from 1k to 63k so there is a lot of variance there. \
 
 
+```{r include=FALSE}
+library(ggplot2)
+library(scales)
+```
 
+```{r}
+# Histogram overlaid with kernel density curve
+ggplot(df, aes(x=charges)) + 
+    geom_histogram(aes(y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=2000,
+                   colour="black", fill="blue",alpha=.5) +
+    geom_density() + # Overlay with transparent density plot 
+    scale_y_continuous(name = "Density of Charges", labels = comma) +
+    ggtitle("Distribution of Charges") + xlab("Beneficiary Charges") 
+```
+
+```{r }
+# Histogram overlaid with kernel density curve
+ggplot(df, aes(x=charges)) + 
+    geom_histogram(aes(y=..density..),      # Histogram with density instead of count on y-axis
+                   #binwidth=2000,
+                   colour="black", fill="blue",alpha=.5) +
+    geom_density() + # Overlay with transparent density plot 
+    scale_x_log10()+
+    scale_y_continuous(name = "Density of Charges", labels = comma) +
+    ggtitle("Distribution of Charges Using Log Transformation") + xlab("Beneficiary Charges") 
+```
